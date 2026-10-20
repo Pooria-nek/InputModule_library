@@ -1,6 +1,6 @@
 #pragma once
 /*
- * Input4Z.h
+ * InputModule.h
  *
  * The "4Z" device: 4 dry-contact (switch) input channels, exposed as a
  * subdevice on a shared HDL-Buspro-style RS485 bus (same bus as 4R).
@@ -23,7 +23,7 @@
 #include "BusproTransport.h"
 #include "BusproDevice.h"
 
-constexpr uint8_t INPUT4Z_CHANNEL_COUNT = 4;
+constexpr uint8_t InputModule_CHANNEL_COUNT = 4;
 
 // Per-channel idle polarity: whether the contact is normally-open (idle =
 // open/HIGH with a pull-up) or normally-closed (idle = closed/LOW).
@@ -34,18 +34,18 @@ enum class ContactPolarity : uint8_t {
     NORMALLY_CLOSED  // idle = LOW (closed... wiring-dependent), active = HIGH
 };
 
-class Input4Z {
+class InputModule {
 public:
     // mySubnetId/myDeviceId: this device's own bus address (1-254 each).
     // dePin: RS485 transceiver DE/RE control pin (-1 if not used).
-    // inputPins: array of exactly INPUT4Z_CHANNEL_COUNT GPIO pins.
-    // polarity: array of exactly INPUT4Z_CHANNEL_COUNT polarity settings
+    // inputPins: array of exactly InputModule_CHANNEL_COUNT GPIO pins.
+    // polarity: array of exactly InputModule_CHANNEL_COUNT polarity settings
     //           (configurable per channel, per your requirement).
     // debounceMs: how long a raw input must be stable before its
     //             debounced state is updated and (if changed) pushed.
-    Input4Z(uint8_t mySubnetId, uint8_t myDeviceId, int8_t dePin,
-            const uint8_t inputPins[INPUT4Z_CHANNEL_COUNT],
-            const ContactPolarity polarity[INPUT4Z_CHANNEL_COUNT],
+    InputModule(uint8_t mySubnetId, uint8_t myDeviceId, int8_t dePin,
+            const uint8_t inputPins[InputModule_CHANNEL_COUNT],
+            const ContactPolarity polarity[InputModule_CHANNEL_COUNT],
             uint16_t debounceMs = 30);
 
     void begin(HardwareSerial* serial, uint32_t baud = 9600);
@@ -69,14 +69,14 @@ private:
     void sendStatusPush();
     void sendStatusTo(uint8_t dstSubnet, uint8_t dstDevice);
 
-    uint8_t inputPins_[INPUT4Z_CHANNEL_COUNT];
-    ContactPolarity polarity_[INPUT4Z_CHANNEL_COUNT];
+    uint8_t inputPins_[InputModule_CHANNEL_COUNT];
+    ContactPolarity polarity_[InputModule_CHANNEL_COUNT];
     uint16_t debounceMs_;
 
-    bool debouncedState_[INPUT4Z_CHANNEL_COUNT] = {false, false, false, false};
-    bool candidateState_[INPUT4Z_CHANNEL_COUNT] = {false, false, false, false};
-    uint32_t candidateSinceMs_[INPUT4Z_CHANNEL_COUNT] = {0, 0, 0, 0};
-    bool candidatePending_[INPUT4Z_CHANNEL_COUNT] = {false, false, false, false};
+    bool debouncedState_[InputModule_CHANNEL_COUNT] = {false, false, false, false};
+    bool candidateState_[InputModule_CHANNEL_COUNT] = {false, false, false, false};
+    uint32_t candidateSinceMs_[InputModule_CHANNEL_COUNT] = {0, 0, 0, 0};
+    bool candidatePending_[InputModule_CHANNEL_COUNT] = {false, false, false, false};
 
     BusproTransport transport_;
     BusproDevice device_;

@@ -1,12 +1,13 @@
 {
-  "name": "4Z",
-  "version": "0.1.0",
+  "name": "InputModule",
+  "version": "0.5.0",
   "description": "4-channel dry-contact input subdevice library for an HDL-Buspro-style RS485 bus. WARNING: wire frame format is a placeholder pending verification against real captures -- see README.",
   "keywords": ["input", "switch", "dry-contact", "rs485", "hdl", "buspro", "stm32", "home-automation"],
   "frameworks": "arduino",
   "platforms": ["ststm32", "atmelavr", "*"],
-  "headers": "Input4Z.h",
+  "headers": "InputModule.h",
   "dependencies": {
-    "BusproCore": "^0.1.0"
+    "BusproCore": "^2.2.0",
+    "MemoryCore": "^1.0.0"
   }
 }
